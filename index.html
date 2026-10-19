@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Number Heist 🐱</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #151329;
+    color: #fff;
+    text-align: center;
+}
+
+header {
+    padding: 22px;
+    background: #0c0b1b;
+    border-bottom: 3px solid #ffc857;
+}
+
+h1 {
+    color: #ffc857;
+    margin: 8px;
+}
+
+.container {
+    max-width: 760px;
+    margin: auto;
+    padding: 15px;
+}
+
+.card {
+    background: #252344;
+    border: 2px solid #ffc857;
+    border-radius: 18px;
+    padding: 22px;
+    margin: 20px 0;
+    box-shadow: 0 6px 20px #0004;
+}
+
+.cat {
+    font-size: 76px;
+}
+
+.photo {
+    width: 100%;
+    max-width: 340px;
+    border-radius: 14px;
+    margin: 10px auto;
+}
+
+.numbers {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffc857;
+    letter-spacing: 3px;
+    overflow-wrap: anywhere;
+}
+
+button {
+    padding: 12px 17px;
+    margin: 6px;
+    border: 0;
+    border-radius: 9px;
+    background: #ffc857;
+    color: #211638;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ffe19a;
+}
+
+input {
+    padding: 12px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 16px;
+    max-width: 90%;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.progress {
+    color: #83f7b0;
+    font-weight: bold;
+}
+
+.small {
+    color: #d2cde8;
+    font-size: 14px;
+}
+
+footer {
+    padding: 20px;
+    color: #d2cde8;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🐾 THE NUMBER HEIST 🐾</h1>
+    <p>One sneaky cat. Five mysterious stages. One missing flag!</p>
+</header>
+
+<main class="container">
+
+    <section class="card">
+        <div class="cat">😼</div>
+        <h2>Meet Detective Whiskers</h2>
+        <p id="dialogue">
+            I've stolen the flag! Catch me if you can, human! 😂
+        </p>
+        <button onclick="catTalk()">Talk to Whiskers 🐱</button>
+    </section>
+
+    <section class="card" id="stage1">
+        <h2>🔎 Stage 1: Number Trouble</h2>
+        <p>Whiskers left this sequence:</p>
+        <p class="numbers">2, 6, 12, 20, ?</p>
+        <p>What comes next?</p>
+
+        <input id="answer1" type="number" placeholder="Your answer">
+        <br>
+
+        <button onclick="check1()">Submit 🔓</button>
+        <button onclick="hint(1)">Hint 💡</button>
+
+        <p class="message" id="msg1"></p>
+        <p class="small" id="hint1"></p>
+    </section>
+
+    <section class="card hidden" id="stage2">
+        <h2>🗂️ Stage 2: Record 30</h2>
+        <div class="cat">🕵️🐈</div>
+        <p>"I speak without a mouth and repeat what you say."</p>
+        <p>What am I?</p>
+
+        <button onclick="check2('mirror')">🪞 Mirror</button>
+        <button onclick="check2('echo')">🔊 Echo</button>
+        <button onclick="check2('cat')">🐱 Cat</button>
+
+        <p class="message" id="msg2"></p>
+        <p class="small" id="hint2"></p>
+        <button onclick="hint(2)">Hint 💡</button>
+    </section>
+
+    <section class="card hidden" id="stage3">
+        <h2>🕵️ Stage 3: The Suspicious Note</h2>
+        <div class="cat">🤨</div>
+        <p>The cat left a note:</p>
+        <p class="numbers">72 101 108 108 111</p>
+        <p>These numbers represent character codes. What word do they spell?</p>
+
+        <input id="answer3" placeholder="Enter the word">
+        <br>
+
+        <button onclick="check3()">Decode 🧩</button>
+        <button onclick="hint(3)">Hint 💡</button>
+
+        <p class="message" id="msg3"></p>
+        <p class="small" id="hint3"></p>
+    </section>
+
+    <section class="card hidden" id="stage4">
+        <h2>💻 Stage 4: The Website Mystery</h2>
+        <div class="cat">🧐</div>
+        <p>
+            Whiskers says: "The browser tells the website who you are.
+            Can you trust everything it says?"
+        </p>
+        <p>Investigate the challenge's deliberately vulnerable demo endpoint.</p>
+        <p class="small">
+            Clue: Check how the server handles the role value.
+            This is a lab challenge—do not try it on other websites.
+        </p>
+
+        <button onclick="investigate()">Investigate the Demo 🔍</button>
+        <p class="message" id="msg4"></p>
+    </section>
+
+    <section class="card hidden" id="stage5">
+        <h2>🏆 Final Stage: Recover the Flag</h2>
+        <div class="cat">😹🎉</div>
+        <p>Detective, submit the final challenge code to retrieve the flag.</p>
+
+        <input id="finalCode" placeholder="Enter final code">
+        <br>
+
+        <button onclick="claimFlag()">Recover Flag 🏆</button>
+        <p class="message" id="msg5"></p>
+    </section>
+
+    <section class="card">
+        <h2>🎯 Mission Board</h2>
+        <p id="progress" class="progress">Progress: 0 / 5 stages</p>
+        <p class="small">Wrong answer? Don't panic. Whiskers gets things wrong too.</p>
+    </section>
+
+</main>
+
+<footer>
+    Made with 🐾, coffee ☕ and suspicious cat energy.
+</footer>
+
+<script>
+const API_URL = "http://localhost:3000";
+let completed = 0;
+
+function unlock(stage) {
+    document.getElementById("stage" + stage).classList.remove("hidden");
+    updateProgress();
+}
+
+function finishStage(stage) {
+    document.getElementById("stage" + stage).dataset.done = "yes";
+    completed = document.querySelectorAll('[data-done="yes"]').length;
+    updateProgress();
+}
+
+function updateProgress() {
+    document.getElementById("progress").textContent =
+        "Progress: " + completed + " / 5 stages";
+}
+
+function check1() {
+    const answer = document.getElementById("answer1").value;
+
+    if (answer === "30") {
+        document.getElementById("msg1").textContent =
+            "Correct! 😹 Record 30 is unlocked!";
+        finishStage(1);
+        unlock(2);
+    } else {
+        document.getElementById("msg1").textContent =
+            "Wrong! Even Whiskers' grandma knows this! 😂";
+    }
+}
+
+function check2(answer) {
+    if (answer === "echo") {
+        document.getElementById("msg2").textContent =
+            "Correct! The cat dropped another suspicious note!";
+        finishStage(2);
+        unlock(3);
+    } else {
+        document.getElementById("msg2").textContent =
+            "Nope! The cat is laughing at your detective skills! 😹";
+    }
+}
+
+function check3() {
+    const answer = document.getElementById("answer3").value.trim().toLowerCase();
+
+    if (answer === "hello") {
+        document.getElementById("msg3").textContent =
+            "Decoded! You found the website investigation clue.";
+        finishStage(3);
+        unlock(4);
+    } else {
+        document.getElementById("msg3").textContent =
+            "Not quite! Decode the numbers as character codes.";
+    }
+}
+
+function hint(stage) {
+    const hints = {
+        1: "Look at the differences: 4, 6, 8... what comes next?",
+        2: "You can hear it when sound bounces back.",
+        3: "Try converting each number from decimal character codes."
+    };
+
+    document.getElementById("hint" + stage).textContent = hints[stage] || "";
+}
+
+async function investigate() {
+    const msg = document.getElementById("msg4");
+    msg.textContent = "Contacting the challenge server...";
+
+    try {
+        const response = await fetch(API_URL + "/api/investigate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                role: "admin"
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            msg.textContent = data.message;
+            finishStage(4);
+            unlock(5);
+        } else {
+            msg.textContent = data.message || "Investigation failed.";
+        }
+    } catch (error) {
+        msg.textContent =
+            "Backend connection failed. Make sure node server.js is running.";
+        console.error(error);
+    }
+}
+
+async function claimFlag() {
+    const msg = document.getElementById("msg5");
+    msg.textContent = "Checking with the challenge server...";
+
+    try {
+        const response = await fetch(API_URL + "/api/claim", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                code: document.getElementById("finalCode").value.trim()
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            msg.textContent = "🎉 You caught Whiskers! Flag: " + data.flag;
+            finishStage(5);
+        } else {
+            msg.textContent = data.message || "Not yet, detective!";
+        }
+    } catch (error) {
+        msg.textContent =
+            "Backend unavailable. Check your server connection.";
+        console.error(error);
+    }
+}
+
+function catTalk() {
+    const messages = [
+        "Meow! Your detective skills are suspicious. 😹",
+        "Bribe me with fish! 🐟",
+        "I plead the fifth... paws! 😂",
+        "The flag? Never heard of it. *sweats in cat*",
+        "I'm not lazy. I'm running a background process. 🐈"
+    ];
+
+    document.getElementById("dialogue").textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+}
+</script>
+
+</body>
+</html>
